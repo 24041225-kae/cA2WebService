@@ -138,8 +138,8 @@ app.get('/deleteitem/:id', async (req, res) => {
 });
 
 
-app.post('/deleteitem', async (req, res) => {
-    const { id } = req.body;
+app.delete('/deleteitem/:id', async (req, res) => {
+    const { id } = req.params;
     try {
         let connection = await mysql.createConnection(dbConfig);
         const [result] = await connection.execute(
@@ -154,17 +154,15 @@ app.post('/deleteitem', async (req, res) => {
             });
         }
 
-        await connection.execute('ALTER TABLE greenplan AUTO_INCREMENT = 1');
-
         res.json({
-            message: 'Item deleted successfully'
+            message: 'Item '+ id + ' deleted successfully'
         });
 
         await connection.end();
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'Server error - could not delete item'
+            message: 'Server error - could not delete item'+ id
         });
     }
 });
