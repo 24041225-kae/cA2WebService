@@ -78,7 +78,7 @@ app.get('/allitems', async (req, res) => {
 
 app.post('/additem', async (req, res)=>{
     // extract data from request body
-    const {item_name, item_type, item_pic} = req.body;
+    const {category, item, item_pic, saved_in_g, logged_on} = req.body;
 
     try{
         // create database connection
@@ -86,13 +86,13 @@ app.post('/additem', async (req, res)=>{
 
         // insert new item into database
         await connection.execute(
-            'INSERT INTO greenplan (item_name, item_type, item_pic) VALUES (?,?,?)',
-            [item_name, item_type, item_pic]
+            'INSERT INTO greenplan (category, item, item_pic, saved_in_g, logged_on) VALUES (?,?,?,?,?)',
+            [category, item, item_pic, saved_in_g, logged_on]
         );
 
         // send success response
         res.status(201).json({
-            message: 'Item ' + item_name + ' added successfully'
+            message: 'Item ' + item + ' added successfully'
         });
 
         await connection.end();
